@@ -128,7 +128,3 @@ const tooltipTheme = EditorView.baseTheme({
     },
   },
 });
-
-document.addEventListener('mouseup', updateTooltip);
-document.addEventListener('keyup', updateTooltip);
-document.addEventListener('contextmenu', hideTooltip);

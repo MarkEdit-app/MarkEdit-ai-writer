@@ -51,6 +51,13 @@ MarkEdit.addExtension(keymap.of([{
   },
 }]));
 
+MarkEdit.onEditorReady(() => {
+  const contentDOM = MarkEdit.editorView.contentDOM;
+  contentDOM.addEventListener('mouseup', updateTooltip);
+  contentDOM.addEventListener('keyup', updateTooltip);
+  contentDOM.addEventListener('contextmenu', hideTooltip);
+});
+
 if (showsTooltip) {
   createTooltip(event => {
     const scale = window.visualViewport?.scale ?? 1.0;
