@@ -33,7 +33,7 @@ MarkEdit.addMainMenuItem({
     ...menuItems,
     { separator: true },
     {
-      title: 'Version 1.0.0',
+      title: 'Version 1.1.0',
       state: () => ({ isEnabled: false }),
     },
     {

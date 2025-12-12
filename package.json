@@ -1,6 +1,6 @@
 {
   "name": "markedit-ai-writer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AI writer for MarkEdit, based on Apple's Foundation Models.",
   "scripts": {
     "lint": "eslint . --config eslint.config.mjs",
