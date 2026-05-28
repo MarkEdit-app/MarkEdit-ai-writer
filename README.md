@@ -1,6 +1,6 @@
 # MarkEdit-ai-writer
 
-AI writer for MarkEdit that leverages [markedit-api](https://github.com/MarkEdit-app/MarkEdit-api), based on Apple's [Foundation Models](https://developer.apple.com/documentation/FoundationModels).
+AI writer for [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) that leverages [markedit-api](https://github.com/MarkEdit-app/MarkEdit-api), based on Apple's [Foundation Models](https://developer.apple.com/documentation/FoundationModels).
 
 <img src="./screenshots/01.png" width="320" alt="01.png"> <img src="./screenshots/02.png" width="320" alt="02.png">
 
