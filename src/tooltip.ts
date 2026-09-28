@@ -1,7 +1,7 @@
 import { EditorView, showTooltip, type Tooltip } from '@codemirror/view';
 import { StateField, type EditorState } from '@codemirror/state';
 import { MarkEdit } from 'markedit-api';
-import { keyboardShortcut } from './settings';
+import { keyboardShortcut, showsTooltip } from './settings';
 import { isLoading } from './loading';
 import { colors } from './colors';
 
@@ -36,6 +36,7 @@ export function createTooltip(onclick: (event: PointerEvent) => void) {
           div.className = nodeClass;
           div.title = 'AI Writer' + (keyboardShortcut === 'Mod-Alt-/' ? ' (Option-Command-/)' : '');
           div.ariaLabel = div.title;
+          div.onmousedown = event => event.preventDefault();
           div.onclick = onclick;
           return { dom: div, offset: { x: 2, y: 0 } };
         },
@@ -47,30 +48,44 @@ export function createTooltip(onclick: (event: PointerEvent) => void) {
 }
 
 export function updateTooltip(event?: Event) {
-  if (isLoading()) {
+  if (!showsTooltip || isLoading()) {
     return;
   }
 
-  if (event && (event.target as HTMLElement | null)?.closest(`.${nodeClass}`) !== null) {
+  if (event && (!(event.target instanceof Element)
+    || event.target.closest('.cm-content') !== MarkEdit.editorView.contentDOM)) {
     return;
   }
 
   if (states.timeoutId !== undefined) {
     clearTimeout(states.timeoutId);
+    states.timeoutId = undefined;
+  }
+
+  if (!MarkEdit.editorView.hasFocus) {
+    hideTooltip();
+    return;
   }
 
   states.timeoutId = setTimeout(() => {
-    updateClassList(list => list.add(visibleClass));
+    states.timeoutId = undefined;
+    if (MarkEdit.editorView.hasFocus && !isLoading()) {
+      updateClassList(list => list.add(visibleClass));
+    }
   }, 300);
 }
 
 export function hideTooltip() {
+  if (states.timeoutId !== undefined) {
+    clearTimeout(states.timeoutId);
+    states.timeoutId = undefined;
+  }
+
   updateClassList(list => list.remove(visibleClass));
 }
 
 function updateClassList(callback: (list: DOMTokenList) => void) {
   document.querySelectorAll(`.${nodeClass}`).forEach(node => callback(node.classList));
-  MarkEdit.editorView.focus(); // Always put focus on the editor
 }
 
 const states: { timeoutId?: ReturnType<typeof setTimeout> } = {};

@@ -33,7 +33,7 @@ MarkEdit.addMainMenuItem({
     ...menuItems,
     { separator: true },
     {
-      title: 'Version 1.1.0',
+      title: 'Version 1.2.0',
       state: () => ({ isEnabled: false }),
     },
     {
@@ -51,14 +51,15 @@ MarkEdit.addExtension(keymap.of([{
   },
 }]));
 
-MarkEdit.onEditorReady(() => {
-  const contentDOM = MarkEdit.editorView.contentDOM;
-  contentDOM.addEventListener('mouseup', updateTooltip);
-  contentDOM.addEventListener('keyup', updateTooltip);
-  contentDOM.addEventListener('contextmenu', hideTooltip);
-});
-
 if (showsTooltip) {
+  MarkEdit.onEditorReady(view => {
+    const contentDOM = view.contentDOM;
+    contentDOM.addEventListener('mouseup', updateTooltip);
+    contentDOM.addEventListener('keyup', updateTooltip);
+    contentDOM.addEventListener('contextmenu', hideTooltip);
+    contentDOM.addEventListener('focusout', hideTooltip);
+  });
+
   createTooltip(event => {
     const scale = window.visualViewport?.scale ?? 1.0;
     const location = { x: (event.clientX - 8) * scale, y: (event.clientY - 8) * scale };
